@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galaxi Logística</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+
+  <header class="sticky-header">
+    <img src="icon-512.png" alt="Galaxi Logística" class="logo" />
+  </header>
+
+  <div class="start-container">
+    <h1>Bienvenido a Galaxi Logística</h1>
+
+    <button onclick="location.href='index.html'" class="btn-galery">
+      Ir al catálogo
+    </button>
+
+    <button id="installBtn" class="btn-install" style="display: none;">
+      Instalar aplicación
+    </button>
+  </div>
+
+  <script>
+    let deferredPrompt = null;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById("installBtn").style.display = "inline-block";
+    });
+
+    document.getElementById("installBtn").addEventListener("click", () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          deferredPrompt = null;
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
