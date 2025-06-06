@@ -26,24 +26,25 @@
   </div>
 
  <script>
+  window.onload = () => {
   let deferredPrompt;
+  const installBtn = document.getElementById("installBtn");
 
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    const installBtn = document.getElementById("installBtn");
     installBtn.style.display = "inline-block";
-
-    installBtn.addEventListener("click", async () => {
-      installBtn.style.display = "none"; // مخفی کردن دکمه
-      deferredPrompt.prompt();
-
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log("User response to install:", outcome);
-
-      deferredPrompt = null;
-    });
   });
+
+  installBtn.addEventListener("click", async () => {
+    installBtn.style.display = "none";
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log("User response to install:", outcome);
+    deferredPrompt = null;
+  });
+};
+
 </script>
 
 </body>
