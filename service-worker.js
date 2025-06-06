@@ -1,15 +1,18 @@
-const CACHE_NAME = "anber-cache-v1";
+const CACHE_NAME = "galaxi-cache-v2";
+
 const urlsToCache = [
-  "index.html",
-  "style.css",
-  "app.js",
-  "manifest.json",
-  "Galexi_perfume_part1.pdf",
-  "icon-192.png",
-  "icon-512.png"
+  "/",
+  "/home.html",
+  "/index.html",
+  "/galeria.html",
+  "/style.css",
+  "/icon.png",
+  "/manifest.json",
+  "/Galexi_perfume_part1.pdf",
+  "/Galexi_perfume_part2.pdf"
 ];
 
-// Instalar SW
+// نصب سرویس‌ورکر و کش‌کردن فایل‌ها
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -18,22 +21,20 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Activar SW
+// فعال‌سازی سرویس‌ورکر و حذف کش‌های قدیمی
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
       Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) return caches.delete(cache);
         })
       )
     )
   );
 });
 
-// Interceptar fetch
+// پاسخ‌دهی از کش یا شبکه
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
