@@ -1,15 +1,14 @@
 const CACHE_NAME = "galaxi-cache-v2";
 
 const urlsToCache = [
-  "/",
-  "/home.html",
-  "/index.html",
-  "/galeria.html",
-  "/style.css",
-  "/icon.png",
-  "/manifest.json",
-  "/Galexi_perfume_part1.pdf",
-  "/Galexi_perfume_part2.pdf"
+  "/Galaxi_amber/",
+  "/Galaxi_amber/home.html",
+  "/Galaxi_amber/index.html",
+  "/Galaxi_amber/style.css",
+  "/Galaxi_amber/icon.png",
+  "/Galaxi_amber/manifest.json",
+  "/Galaxi_amber/Galexi_perfume_part1.pdf",
+  "/Galaxi_amber/Galexi_perfume_part2.pdf"
 ];
 
 // نصب سرویس‌ورکر و کش‌کردن فایل‌ها

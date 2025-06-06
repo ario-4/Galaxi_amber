@@ -1,8 +1,10 @@
 {
-  "name": "Galaxi Logística",
-  "short_name": "Galaxi",
-  "start_url": "home.html",
-  "display": "standalone",
+  "start_url": "/Galaxi_amber/home.html",
+"scope": "/Galaxi_amber/",
+"display": "standalone",
+"name": "Galaxi Logística",
+"short_name": "Galaxi",
+
   "background_color": "#ffffff",
   "theme_color": "#4285f4",
   "icons": [
