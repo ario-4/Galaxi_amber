@@ -20,7 +20,7 @@
       Ir al catálogo
     </button>
 
-    <button id="installBtn" class="btn-install" >
+    <button id="installBtn" class="btn-install" style="display: none;">
       Instalar aplicación
     </button>
   </div>
@@ -28,12 +28,14 @@
   <script>
     let deferredPrompt = null;
 
+    // Captura evento para instalación
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
       document.getElementById("installBtn").style.display = "inline-block";
     });
 
+    // Acción al hacer clic en botón de instalación
     document.getElementById("installBtn").addEventListener("click", () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
@@ -42,22 +44,21 @@
         });
       }
     });
+
+    // Registrar Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register('service-worker.js').then(
+          function (registration) {
+            console.log("Service worker registrado:", registration.scope);
+          },
+          function (err) {
+            console.log("Error al registrar el Service Worker:", err);
+          }
+        );
+      });
+    }
   </script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("sw.js").then(
-        function (registration) {
-          console.log("Service Worker registrado:", registration.scope);
-        },
-        function (err) {
-          console.log("Error al registrar el Service Worker:", err);
-        }
-      );
-    });
-  }
-</script>
-
-
 </body>
 </html>
+
