@@ -25,40 +25,27 @@
     </button>
   </div>
 
-  <script>
-    let deferredPrompt = null;
+ <script>
+  let deferredPrompt;
 
-    // Captura evento para instalación
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById("installBtn").style.display = "inline-block";
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.getElementById("installBtn");
+    installBtn.style.display = "inline-block";
+
+    installBtn.addEventListener("click", async () => {
+      installBtn.style.display = "none"; // مخفی کردن دکمه
+      deferredPrompt.prompt();
+
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log("User response to install:", outcome);
+
+      deferredPrompt = null;
     });
+  });
+</script>
 
-    // Acción al hacer clic en botón de instalación
-    document.getElementById("installBtn").addEventListener("click", () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          deferredPrompt = null;
-        });
-      }
-    });
-
-    // Registrar Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register('service-worker.js').then(
-          function (registration) {
-            console.log("Service worker registrado:", registration.scope);
-          },
-          function (err) {
-            console.log("Error al registrar el Service Worker:", err);
-          }
-        );
-      });
-    }
-  </script>
 </body>
 </html>
 
