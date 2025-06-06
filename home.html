@@ -10,7 +10,7 @@
 <body>
 
   <header class="sticky-header">
-    <img src="icon-512.png" alt="Galaxi Logística" class="logo" />
+    <img src="icon.png" alt="Galaxi Logística" class="logo" />
   </header>
 
   <div class="start-container">
@@ -23,30 +23,55 @@
     <button id="installBtn" class="btn-install" style="display: none;">
       Instalar aplicación
     </button>
+
+    <div id="manualInstall" style="display: none; margin-top: 20px;">
+      <p style="text-align: center; font-size: 15px;">
+        Para instalar manualmente, abre el menú de tu navegador y selecciona:<br>
+        <strong>"Agregar a pantalla de inicio"</strong>.
+      </p>
+    </div>
   </div>
 
- <script>
-  window.onload = () => {
-  let deferredPrompt;
-  const installBtn = document.getElementById("installBtn");
+  <script>
+    let deferredPrompt = null;
+    const installBtn = document.getElementById("installBtn");
+    const manualInstall = document.getElementById("manualInstall");
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "inline-block";
-  });
+    // بررسی اینکه آیا اپ از قبل نصب شده یا نه
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
-  installBtn.addEventListener("click", async () => {
-    installBtn.style.display = "none";
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log("User response to install:", outcome);
-    deferredPrompt = null;
-  });
-};
+    if (!isStandalone) {
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = "inline-block";
+      });
 
-</script>
+      installBtn.addEventListener("click", () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              installBtn.style.display = 'none';
+              manualInstall.style.display = 'none';
+            }
+            deferredPrompt = null;
+          });
+        }
+      });
+
+      // اگر تا 5 ثانیه بعد هنوز beforeinstallprompt نیومد، راهنمای دستی بده
+      setTimeout(() => {
+        if (!deferredPrompt) {
+          manualInstall.style.display = "block";
+        }
+      }, 5000);
+    } else {
+      installBtn.style.display = "none";
+    }
+  </script>
 
 </body>
 </html>
+
 
